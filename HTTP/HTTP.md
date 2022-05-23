@@ -345,5 +345,5 @@ ex) 스페이스나 주석처럼 크게 영향이없는 변경에서 캐시를 �
 - If-Modified-Since, If-Unmodified-Since: Last-Modified 값 사용
 
 ### 프록시 캐시
-
+    test commit
 ### 캐시무효화
