@@ -344,7 +344,58 @@ ex) 스페이스나 주석처럼 크게 영향이없는 변경에서 캐시를 �
 - If-Match, If-None-Match: ETag 값 사용
 - If-Modified-Since, If-Unmodified-Since: Last-Modified 값 사용
 
-### 프록시 캐시
-    test commit
-    test commit 2
-### 캐시무효화
+### 프록시 서버
+
+- 프록시(Proxy): 서버와 클라이언트 사이에 중계기로서 대리로 통신을 수행하는 것
+- 프록시 서버: 그 중계 기능을 하는 것을 프록시 서버라고 부른다.
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9d2c3187-2569-4426-b509-18080e2a6165/Untitled.png)
+
+> 프록시 서버 중 일부는 프록시 서버에 요청된 내용들을 [캐시](https://ko.wikipedia.org/wiki/%EC%BA%90%EC%8B%9C)
+를 이용하여 저장해 둔다. 이렇게 캐시를 해 두고 난 후에, 캐시 안에 있는 정보를 요구하는 요청에 대해서는 원격 서버에 접속하여 데이터를 가져올 필요가 없게 됨으로써 전송 시간을 절약할 수 있게 됨과 동시에 불필요하게 외부와의 연결을 하지 않아도 된다는 장점을 갖게 된다.
+> 
+
+**Cache-Control**
+
+**캐시 지시어(directives)**
+
+- Cache-control: public
+    
+    응답이 public 캐시에 저장되어도 됨
+    
+- Cache-Control: private
+    
+    응답이 해당 사용자만을 위한 것임, private 캐시에 저장해야 함(기본값)
+    
+- Cache-Control: s-maxage
+    
+    프록시 캐시에만 적용되는 max-age
+    
+- Age: 60 (HTTP 헤더)
+    
+    오리진 서버에서 응답 후 프록시 캐시 내에 머문 시간(초)
+    
+
+### 캐시무효화 필요한 이유?
+
+캐시를 적용하지 않는다고 해서 캐시가 안되는것이 아니다. 
+
+웹브라우저에서 임의로 캐시를 할수도있다.
+
+**Cache-Control**
+
+**캐시 지시어(directives) - 확실한 캐시 무효화 응답 예시**
+
+> Cache-Control: no-cache, no-store, must-revalidate
+> 
+
+> Pragma: no-cache ← HTTP 1.0 하위 호환
+> 
+
+- Cache-Control: must-revalidate
+    
+    캐시 만료후 최조 조회시 **원 서버에 검증**해야함
+    
+    원 서버 접근 실패시 반드시 오류가 발생해야함 - 504(Gateway TImeout)
+    
+    must-revalidate는 캐시 유효 시간이라면 캐시를 사용함
